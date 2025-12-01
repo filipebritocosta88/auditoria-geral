@@ -1,18 +1,90 @@
-<html><head><link rel="stylesheet" href="style.css"><title>Auditoria Geral</title></head>
-<body><h1>Auditoria Geral</h1><a href="Salvador_Shopping.html">Salvador Shopping</a>
-<a href="Shopping_da_Bahia.html">Shopping da Bahia</a>
-<a href="Shopping_Paralela.html">Shopping Paralela</a>
-<a href="Bela_Vista.html">Bela Vista</a>
-<a href="Lauro_de_Freitas.html">Lauro de Freitas</a>
-<a href="Barra.html">Barra</a>
-<a href="Rio_de_Janeiro.html">Rio de Janeiro</a>
-<a href="Belo_Horizonte.html">Belo Horizonte</a>
-<a href="Manaus.html">Manaus</a>
-<a href="Recife_Riomar.html">Recife Riomar</a>
-<a href="Recife_Ultra.html">Recife Ultra</a>
-<a href="Maceio_Parque.html">Maceio Parque</a>
-<a href="Shopping_Maceio.html">Shopping Maceio</a>
-<a href="Vila_Velha.html">Vila Velha</a>
-<a href="Vitoria.html">Vitoria</a>
-<a href="Fortaleza.html">Fortaleza</a>
-<a href="Belem.html">Belem</a></body></html>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Auditoria Geral - Sistema</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- SheetJS for Excel import/export -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <!-- Firebase optional (user can paste config into firebase.sample.js) -->
+</head>
+<body>
+  <header class="topbar"><div class="brand">A</div><h1>Auditoria Geral</h1><div id="user-area"></div></header>
+  <main class="container">
+    <section class="controls">
+      <label>PDV:
+        <select id="pdv-select"></select>
+      </label>
+      <input id="search" placeholder="Buscar (ID, qualquer campo...)" />
+      <label>Pesquisar por ID<input type="checkbox" id="search-id" checked></label>
+      <label>Pesquisar por Categoria<input type="checkbox" id="search-cat" checked></label>
+      <label>Pesquisar em Todos<input type="checkbox" id="search-all" checked></label>
+      <button id="login-btn">Entrar</button>
+      <button id="logout-btn" style="display:none">Sair</button>
+    </section>
+
+    <section class="actions">
+      <button id="add-row-btn">Adicionar Auditoria</button>
+      <input type="file" id="file-input" accept=".csv,.xlsx,.xls" />
+      <button id="export-xlsx">Exportar XLSX</button>
+      <button id="export-csv">Exportar CSV</button>
+      <button id="clear-local">Limpar dados locais (PDV)</button>
+    </section>
+
+    <section id="filters">
+      <h3>Filtros</h3>
+      <div class="filters-grid" id="filters-grid"></div>
+      <button id="apply-filters">Aplicar filtros</button>
+      <button id="clear-filters">Limpar filtros</button>
+    </section>
+
+    <section id="table-section">
+      <table id="auditoria-table">
+        <thead><tr>
+          <th>ID</th><th>NOME</th><th>CATEGORIA</th><th>SUB-CATEGORIA</th><th>SISTEMA</th><th>FISICO</th><th>SITUAÇÃO</th><th>DATA</th><th>MOTIVO</th><th>COMO FOI RESOLVIDO</th><th>AÇÕES</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section id="charts">
+      <h3>Gráficos</h3>
+      <canvas id="chart-situacao" width="600" height="200"></canvas>
+      <canvas id="chart-categoria" width="600" height="200"></canvas>
+    </section>
+
+    <section id="admin-section" style="display:none">
+      <h2>Painel Admin</h2>
+      <div id="admin-info"></div>
+    </section>
+  </main>
+
+  <div id="modal" class="modal" style="display:none">
+    <div class="modal-content">
+      <h3 id="modal-title">Adicionar Auditoria</h3>
+      <form id="modal-form">
+        <label>ID<input name="id" required></label>
+        <label>NOME<input name="nome"></label>
+        <label>CATEGORIA<input name="categoria"></label>
+        <label>SUB-CATEGORIA<input name="subcategoria"></label>
+        <label>SISTEMA<input name="sistema"></label>
+        <label>FISICO<input name="fisico"></label>
+        <label>SITUAÇÃO<input name="situacao"></label>
+        <label>DATA<input name="data" type="date"></label>
+        <label>MOTIVO<textarea name="motivo"></textarea></label>
+        <label>COMO FOI RESOLVIDO<textarea name="resolvido"></textarea></label>
+        <div class="modal-actions">
+          <button type="submit">Salvar</button>
+          <button type="button" id="modal-cancel">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="firebase.sample.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
