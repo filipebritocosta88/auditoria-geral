@@ -1,2 +1,74 @@
-<html><head><link rel="stylesheet" href="style.css"><title>Bela_Vista</title></head>
-<body><h1>Bela Vista</h1><p>Área de auditoria.</p><a href="index.html">Voltar</a></body></html>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Bela Vista - Auditoria</title>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- PapaParse para ler CSV -->
+    <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
+</head>
+
+<body>
+    <h1>Bela Vista - Auditoria</h1>
+
+    <table id="tabela-auditoria" border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>NOME</th>
+                <th>CATEGORIA</th>
+                <th>SUB-CATEGORIA</th>
+                <th>VALOR</th>
+                <th>SISTEMA</th>
+                <th>FISICO</th>
+                <th>SITUAÇÃO</th>
+                <th>DATA</th>
+                <th>MOTIVO</th>
+                <th>RESOLVIDO?</th>
+                <th>COMO?</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <p><a href="index.html">Voltar</a></p>
+
+<script>
+const arquivoCSV = "BELA_VISTA.csv"; // <-- ARQUIVO DESTE PDV
+
+Papa.parse(arquivoCSV, {
+    download: true,
+    header: true,
+    complete: function(results) {
+        preencherTabela(results.data);
+    }
+});
+
+function preencherTabela(data) {
+    const tbody = document.querySelector("#tabela-auditoria tbody");
+    tbody.innerHTML = ""; // Limpa tabela
+
+    data.forEach(linha => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${linha["Id"] ?? ""}</td>
+            <td>${linha["Nome"] ?? ""}</td>
+            <td>${linha["Categoria"] ?? ""}</td>
+            <td>${linha["Sub-categoria"] ?? ""}</td>
+            <td>${linha["Valor"] ?? ""}</td>
+            <td>${linha["Sistema"] ?? ""}</td>
+            <td>${linha["Fisico"] ?? ""}</td>
+            <td>${linha["Situação"] ?? ""}</td>
+            <td>${linha["Data"] ?? ""}</td>
+            <td>${linha["Motivo"] ?? ""}</td>
+            <td>${linha["Resolvido ?"] ?? ""}</td>
+            <td>${linha["Como ?"] ?? ""}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+</script>
+
+</body>
+</html>
