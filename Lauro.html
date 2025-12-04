@@ -1,2 +1,65 @@
-<html><head><link rel="stylesheet" href="style.css"><title>Lauro</title></head>
-<body><h1>Lauro</h1><p>Área de auditoria.</p><a href="index.html">Voltar</a></body></html>
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+    <title>Lauro</title>
+</head>
+
+<body>
+
+<h1>Lauro</h1>
+<p>Área de auditoria.</p>
+
+<a href="index.html">Voltar</a>
+
+<br><br>
+
+<!-- Tabela onde os dados serão carregados -->
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Categoria</th>
+            <th>Subcategoria</th>
+            <th>Sistema</th>
+            <th>Físico</th>
+            <th>Situação</th>
+            <th>Data</th>
+        </tr>
+    </thead>
+
+    <tbody id="tabela-dados"></tbody>
+</table>
+
+<!-- Script que carrega o banco de dados JSON -->
+<script>
+async function carregarDados() {
+    // Caminho para o seu JSON
+    const response = await fetch('dados/lauro.json');
+
+    const dados = await response.json();
+
+    const tabela = document.getElementById("tabela-dados");
+
+    dados.forEach(item => {
+        tabela.innerHTML += `
+            <tr>
+                <td>${item.id}</td>
+                <td>${item.nome}</td>
+                <td>${item.categoria}</td>
+                <td>${item.subcategoria}</td>
+                <td>${item.sistema}</td>
+                <td>${item.fisico}</td>
+                <td>${item.situacao}</td>
+                <td>${item.data}</td>
+            </tr>
+        `;
+    });
+}
+
+carregarDados();
+</script>
+
+</body>
+</html>
+
